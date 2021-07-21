@@ -123,3 +123,14 @@
     $ 
     ```
 **Note:** *kubens* allows us to easily switch between Kubernetes namespaces. Usage `kubens <namespace>`
+
+## Deployment
+- A deployment is a high-level construct
+  - Allows scaling, rolling updates, rollbacks
+  - multiple deployments can be used
+  - delegates pods management to replica sets
+
+- A replica set is a low-level construct
+  - Makes sure that a given number of identical pods are running
+  - Allows scaling
+  - Rarely used directly
