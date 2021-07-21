@@ -134,3 +134,66 @@
   - Makes sure that a given number of identical pods are running
   - Allows scaling
   - Rarely used directly
+
+- To create a deployment using yaml use `kubectl apply -f <deployment-name.yaml>`
+    ```
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: nginx-deployment
+      labels:
+        app: nginx
+    spec:
+      replicas: 3
+      selector:
+        matchLabels:
+          app: nginx
+      template:
+        metadata:
+          labels:
+            app: nginx
+        spec:
+          containers:
+          - name: nginx
+            image: nginx:1.14.2
+            ports:
+            - containerPort: 80
+    ```
+    
+    ```
+    $ touch nginx-deployment.yaml
+    $ vim nginx-deployment.yaml 
+    $ kubectl apply -f nginx-deployment.yaml 
+    deployment.apps/nginx-deployment created
+    $ kubectl get deployment
+    NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+    nginx-deployment   1/3     3            1           23s
+    $ 
+    ```
+- Delete one pod and test self healing in action
+    ```
+    $ kubectl get all
+    NAME                                    READY   STATUS    RESTARTS   AGE
+    pod/nginx-deployment-574b87c764-27sxx   1/1     Running   0          4m56s
+    pod/nginx-deployment-574b87c764-fhrtb   1/1     Running   0          4m56s
+    pod/nginx-deployment-574b87c764-xtgsj   1/1     Running   0          4m56s
+
+    NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+    service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   8m29s
+
+    NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
+    deployment.apps/nginx-deployment   3/3     3            3           4m56s
+
+    NAME                                          DESIRED   CURRENT   READY   AGE
+    replicaset.apps/nginx-deployment-574b87c764   3         3         3       4m56s
+    $ kubectl delete  pod/nginx-deployment-574b87c764-27sxx
+    pod "nginx-deployment-574b87c764-27sxx" deleted
+    $ 
+    ```
+- Use `watch kubectl get pods` to see how a new pod is added to the cluster
+
+![re-creating](https://user-images.githubusercontent.com/55191821/126512732-460ae0ef-83b8-4c6c-834f-22ac5614e77c.png)
+
+- To get all the details of deployment including status use `kubectl get deployment <deployment-name> -o yaml` 
+  Example: `kubectl get deployment nginx-deployment -o yaml`
+
