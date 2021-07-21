@@ -1,2 +1,5 @@
-# k8s-cmds
-Kubernetes - Kubectl Commands
+
+# Kubernetes CLI
+## Kubectl
+- Kubectl is almost the only tool we'll need to talk to kubernetes
+
