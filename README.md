@@ -196,4 +196,32 @@
 
 - To get all the details of deployment including status use `kubectl get deployment <deployment-name> -o yaml` 
   Example: `kubectl get deployment nginx-deployment -o yaml`
+- We can also create deploymet using commands like `kubectl create deployment pingpong --image=alpine --replicas=3`
+- To update a deployment use (here scale up replicas) `kubectl scale deployment pingpong --replicas=3`
+
+## Services
+### Exposing  containers
+- `kubectl expose` creates a *service* for existing pods  
+- A service is a stable address for a pod (or a bunch of pods)
+- If we want to connect to our pod(s), we need to create a service
+- Once a service is created, CoreDNS will allow us to resolve it by name
+
+### Basic service types
+- Cluster IP(default type)
+  - A virtual IP address is allocated for the service (in an internal, private range)
+  - This IP is reachable only from within the cluster (nodes and pods)
+  - Our code can connect to the service using original port number
+- NodePort 
+  - A port is allocated for the service (by default, in range 30000-32768)
+  - That port is made available on all our nodes and anybody can connect to it
+  - Our code must be changed to connect to that new port number
+  
+**Note** : Cluster IP and NodePort are always available. Under the hood : `kube-proxy` is using a userland proxy and a bunch of `iptables` rules
+
+- LoadBalancer
+  - An external load balancer is allocated for the service
+  - Available only when underlaying infrastructure provides some load balancer as service (e.g. AWS, Azure, GCE)
+- ExternalName
+  - The DNS entry managed by coreDNS will just be a `CNAME` to a provided record
+  - No ports, no IP address, no nothing else is allocated 
 
