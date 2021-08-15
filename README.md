@@ -225,3 +225,11 @@
   - The DNS entry managed by coreDNS will just be a `CNAME` to a provided record
   - No ports, no IP address, no nothing else is allocated 
 
+## K8S network model
+- Everything can reach everything
+- No address translation
+- No port translation
+- No new protocol
+- Every Pod gets its own IP address
+- pods on a node can communicate with all pods on all nodes without NAT
+- agents on a node (e.g. system daemons, kubelet) can communicate with all pods on that node
