@@ -93,7 +93,7 @@
     static-web   1/1     Running   0          30s
     $ 
     ```
-- We can also add the namespace inside the yaml configuration. In that case we don't need to specify namespace using the namespace flag
+- We can also add the namespace inside the yaml configuration. In that case we need to specify namespace using the namespace flag
     ```
     apiVersion: v1
     kind: Pod
